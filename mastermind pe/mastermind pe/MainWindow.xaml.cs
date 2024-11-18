@@ -75,4 +75,86 @@ namespace MastermindGame
             _timer?.Stop();
         }
 
-       
+        // Mastermind-PE5: XML-Documentatie
+        /// <summary>
+        /// Toggle debug mode to show/hide the generated code.
+        /// </summary>
+        private void ToggleDebug() { /* Zie hierboven */ }
+
+        /// <summary>
+        /// Starts a countdown timer for the player's turn.
+        /// </summary>
+        private void StartCountdown() { /* Zie hierboven */ }
+
+        /// <summary>
+        /// Stops the countdown timer if it is running.
+        /// </summary>
+        private void StopCountdown() { /* Zie hierboven */ }
+
+        // Helper: Game Initialisatie
+        private void InitializeGame()
+        {
+            ComboBox1.ItemsSource = _colors;
+            ComboBox2.ItemsSource = _colors;
+            ComboBox3.ItemsSource = _colors;
+            ComboBox4.ItemsSource = _colors;
+
+            _generatedCode = GenerateRandomCode();
+            Title = "Mastermind Game - Start";
+            NextAttempt();
+        }
+
+        private string[] GenerateRandomCode()
+        {
+            var random = new Random();
+            return Enumerable.Range(0, 4).Select(_ => _colors[random.Next(_colors.Length)]).ToArray();
+        }
+
+        // Helper: Gok Controleren
+        private void CheckCode(object sender, RoutedEventArgs e)
+        {
+            var guesses = new[] {
+                ComboBox1.SelectedItem as string,
+                ComboBox2.SelectedItem as string,
+                ComboBox3.SelectedItem as string,
+                ComboBox4.SelectedItem as string
+            };
+
+            var labels = new[] { Label1, Label2, Label3, Label4 };
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (guesses[i] == null) continue;
+
+                if (guesses[i] == _generatedCode[i])
+                {
+                    labels[i].BorderBrush = Brushes.DarkRed;
+                }
+                else if (_generatedCode.Contains(guesses[i]))
+                {
+                    labels[i].BorderBrush = Brushes.Wheat;
+                }
+                else
+                {
+                    labels[i].BorderBrush = Brushes.Black;
+                }
+
+                labels[i].BorderThickness = new Thickness(2);
+            }
+
+            StartCountdown();
+            NextAttempt();
+        }
+
+        private void OnColorSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is string selectedColor)
+            {
+                if (comboBox == ComboBox1) Label1.Content = selectedColor;
+                if (comboBox == ComboBox2) Label2.Content = selectedColor;
+                if (comboBox == ComboBox3) Label3.Content = selectedColor;
+                if (comboBox == ComboBox4) Label4.Content = selectedColor;
+            }
+        }
+    }
+}
