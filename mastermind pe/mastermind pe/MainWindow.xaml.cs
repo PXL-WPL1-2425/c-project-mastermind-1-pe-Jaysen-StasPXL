@@ -44,4 +44,29 @@ namespace MastermindGame
                 ToggleDebug();
         }
 
-        
+        // Mastermind-PE3: Timer Start
+        private void StartCountdown()
+        {
+            _timeLeft = 10;
+            if (_timer == null)
+            {
+                _timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(1)
+                };
+                _timer.Tick += Timer_Tick;
+            }
+            _timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (--_timeLeft <= 0)
+            {
+                StopCountdown();
+                MessageBox.Show("Tijd is op! Je verliest deze beurt.");
+                NextAttempt();
+            }
+        }
+
+      
