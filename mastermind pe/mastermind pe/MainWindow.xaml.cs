@@ -29,4 +29,19 @@ namespace MastermindGame
             Title = $"Mastermind - Poging {_attempts}";
         }
 
-      
+        // Mastermind-PE2: Debug-mode
+        private void ToggleDebug()
+        {
+            DebugTextBox.Visibility = DebugTextBox.Visibility == Visibility.Collapsed
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            DebugTextBox.Text = string.Join(", ", _generatedCode);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.F12)
+                ToggleDebug();
+        }
+
+        
