@@ -69,4 +69,10 @@ namespace MastermindGame
             }
         }
 
-      
+        // Mastermind-PE4: Timer Stop
+        private void StopCountdown()
+        {
+            _timer?.Stop();
+        }
+
+       
